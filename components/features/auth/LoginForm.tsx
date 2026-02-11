@@ -31,7 +31,7 @@ export const LoginForm = () => {
       // Store token (showing the reviewers you handle session management)
       if (response.data.access_token) {
         localStorage.setItem('token', response.data.access_token);
-        router.push('/home');
+        router.push('/main/home');
       }
     } catch (err) {
       console.error(err);

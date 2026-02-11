@@ -19,7 +19,7 @@ export default function LoginPage() {
 
       <div className="mt-auto pb-8 flex justify-center gap-1 text-sm">
         <span className="text-white">No account?</span>
-        <Link href="/register" className="text-[#D4B16A] border-b border-[#D4B16A] hover:opacity-80 transition-all">
+        <Link href="/auth/register" className="text-[#D4B16A] border-b border-[#D4B16A] hover:opacity-80 transition-all">
           Register here
         </Link>
       </div>

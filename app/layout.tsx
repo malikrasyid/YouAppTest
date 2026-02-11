@@ -1,13 +1,12 @@
 import './globals.css';
-import React from 'react';
 import { Inter } from 'next/font/google';
 import { cn } from '../lib/utils';
 
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata = {
-  title: 'YouApp - Profile',
-  description: 'Mobile Web App for YouApp Test',
+  title: 'YouApp | Profile & Social',
+  description: 'A mobile-first web application test.',
 };
 
 export default function RootLayout({
@@ -17,12 +16,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={cn(
-        inter.className,
-        "bg-[#09141A] text-white min-h-screen antialiased"
-      )}>
-        {/* We wrap everything in a max-width container to mimic a mobile screen on desktop */}
-        <div className="max-w-md mx-auto min-h-screen bg-gradient-to-tr from-[#09141A] via-[#0D1D23] to-[#09141A] shadow-2xl overflow-x-hidden">
+      <body 
+        className={cn(
+          inter.className, 
+          "bg-[#09141A] text-white min-h-screen antialiased selection:bg-brand-gold/30"
+        )}
+      >
+        <div className="relative max-w-md mx-auto min-h-screen shadow-2xl overflow-hidden flex flex-col">
           {children}
         </div>
       </body>

@@ -32,7 +32,7 @@ export const authApi = {
 export const userApi = {
   createProfile: (data: CreateUserDto) => api.post('/api/createProfile', data),
   getProfile: () => api.get<{ data: UserProfile }>('/api/getProfile'),
-  updateProfile: (data: UpdateUserDto) => api.put('/api/updateProfile', data),
+  updateProfile: (data: Partial<UpdateUserDto>) => api.put('/api/updateProfile', data),
 };
 
 export default api;

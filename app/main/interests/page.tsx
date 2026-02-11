@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { userApi } from "../../../lib/api";
 import { X } from "lucide-react";
 import { useRouter } from "next/navigation";
 
@@ -8,6 +9,21 @@ export default function InterestsPage() {
   const router = useRouter();
   const [inputValue, setInputValue] = useState("");
   const [interests, setInterests] = useState<string[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const loadCurrentInterests = async () => {
+      try {
+        const res = await userApi.getProfile();
+        if (res.data.data.interests) {
+          setInterests(res.data.data.interests);
+        }
+      } catch (err) {
+        console.error("Failed to load interests:", err);
+      }
+    };
+    loadCurrentInterests();
+  }, []);
 
   const addInterest = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && inputValue.trim()) {
@@ -23,8 +39,15 @@ export default function InterestsPage() {
   };
 
   const handleSave = async () => {
-    // Call userApi.updateProfile({ interests }) here
-    router.back();
+    setLoading(true);
+    try {
+      await userApi.updateProfile({ interests }); 
+      router.push("/main/home"); 
+    } catch (err) {
+      alert("Failed to save interests");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -33,8 +56,12 @@ export default function InterestsPage() {
         <button onClick={() => router.back()} className="text-white flex items-center">
           <span className="ml-1 text-sm font-semibold">Back</span>
         </button>
-        <button onClick={handleSave} className="text-[#4599DB] font-semibold">
-          Save
+        <button 
+          onClick={handleSave} 
+          disabled={loading}
+          className="text-[#4599DB] font-semibold disabled:opacity-50"
+        >
+          {loading ? "Saving..." : "Save"}
         </button>
       </div>
 
@@ -51,7 +78,7 @@ export default function InterestsPage() {
               className="flex items-center gap-2 bg-white/10 px-3 py-1.5 rounded-lg text-white text-sm"
             >
               {item}
-              <button onClick={() => removeInterest(index)}>
+              <button onClick={() => removeInterest(index)} className="hover:text-red-400">
                 <X size={14} />
               </button>
             </div>
@@ -61,6 +88,7 @@ export default function InterestsPage() {
             value={inputValue}
             onChange={(e) => setInputValue(e.target.value)}
             onKeyDown={addInterest}
+            placeholder={interests.length === 0 ? "Type and press enter..." : ""}
             autoFocus
           />
         </div>

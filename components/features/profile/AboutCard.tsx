@@ -1,13 +1,22 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { GlassCard } from "../../ui/card";
 import { Edit2 } from "lucide-react";
 import { Input } from "../../ui/input";
 import { getZodiac, getShio } from "../../../lib/zodiac";
 import { userApi } from "../../../lib/api";
 
-export const AboutCard = ({ initialData }: { initialData?: any }) => {
+export const AboutCard = ({ 
+  initialData, 
+  onUpdate 
+}: { 
+  initialData: any, 
+  onUpdate: () => void 
+}) => {
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(initialData?.image || null);
+
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
@@ -41,10 +50,24 @@ export const AboutCard = ({ initialData }: { initialData?: any }) => {
     try {
       await userApi.updateProfile(formData);
       setIsEditing(false);
+      onUpdate();
     } catch (error) {
       alert("Failed to update profile");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        const base64String = reader.result as string;
+        setImagePreview(base64String); // For local preview
+        setFormData(prev => ({ ...prev, image: base64String })); // Add to payload
+      };
+      reader.readAsDataURL(file); // This converts file to Base64
     }
   };
 
@@ -85,10 +108,26 @@ export const AboutCard = ({ initialData }: { initialData?: any }) => {
         <div className="space-y-4">
           {/* Add Image Section */}
           <div className="flex items-center gap-4 mb-6">
-            <div className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 cursor-pointer">
-              <span className="text-2xl text-[#D4B16A]">+</span>
+            <input 
+              type="file" 
+              ref={fileInputRef} 
+              onChange={handleImageChange} 
+              className="hidden" 
+              accept="image/*"
+            />
+            <div 
+              onClick={() => fileInputRef.current?.click()}
+              className="w-14 h-14 bg-white/5 rounded-2xl flex items-center justify-center border border-white/10 cursor-pointer overflow-hidden"
+            >
+              {imagePreview ? (
+                <img src={imagePreview} className="w-full h-full object-cover" alt="Preview" />
+              ) : (
+                <span className="text-2xl text-[#D4B16A]">+</span>
+              )}
             </div>
-            <span className="text-xs text-white font-medium">Add image</span>
+            <span className="text-xs text-white font-medium">
+              {imagePreview ? "Change image" : "Add image"}
+            </span>
           </div>
 
           {/* Form Rows */}

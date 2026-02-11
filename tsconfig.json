@@ -5,9 +5,10 @@
       "dom.iterable",
       "esnext"
     ],
+    "types": ["node", "jest", "cypress"],
     "allowJs": true,
     "skipLibCheck": true,
-    "strict": false,
+    "strict": true,
     "noEmit": true,
     "incremental": true,
     "esModuleInterop": true,

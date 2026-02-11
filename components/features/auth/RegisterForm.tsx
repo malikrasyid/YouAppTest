@@ -30,7 +30,7 @@ export const RegisterForm = () => {
         username: formData.username,
         password: formData.password,
       });
-      router.push("/login");
+      router.push("/auth/login");
     } catch (err) {
       console.error(err);
       alert("Registration failed. Please try again.");
