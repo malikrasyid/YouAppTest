@@ -11,7 +11,7 @@ export const InterestCard = ({ interests = [] }: { interests?: string[] }) => {
       <div className="flex justify-between items-center mb-4">
         <h3 className="font-bold text-white text-sm">Interest</h3>
         <Link href="/main/interests">
-          <Edit2 size={18} className="text-white" />
+          <Edit2 size={17} className="text-white" />
         </Link>
       </div>
 
@@ -20,7 +20,7 @@ export const InterestCard = ({ interests = [] }: { interests?: string[] }) => {
           interests.map((item, index) => (
             <div 
               key={index} 
-              className="bg-white/10 px-4 py-2 rounded-full text-sm font-semibold text-white"
+              className="bg-white/10 px-4 py-2 rounded-full text-sm font-medium text-white"
             >
               {item}
             </div>

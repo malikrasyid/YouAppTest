@@ -10,7 +10,7 @@ export const GlassCard = ({
 }) => {
   return (
     <div className={cn(
-      "bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-xl",
+      "bg-[#0E191F] backdrop-blur-lg rounded-2xl p-6 pt-3 shadow-xl",
       className
     )}>
       {children}

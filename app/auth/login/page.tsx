@@ -5,7 +5,7 @@ import { ChevronLeft } from "lucide-react";
 
 export default function LoginPage() {
   return (
-    <div className="flex flex-col min-h-screen p-8 bg-gradient-to-br from-[#09141A] to-[#0D1D23]">
+    <div className="flex flex-col min-h-screen p-8 gradient-bg">
       <div className="flex items-center mb-10">
         <Link href="/" className="flex items-center text-white/90">
           <ChevronLeft size={24} />

@@ -6,20 +6,20 @@ import {
     UserProfile,
     CreateUserDto,
     UpdateUserDto
-} from '../types/user'
+} from '../types/user';
+import { ChatMessage } from '../types/chat';
 
 const api = axios.create({
-  baseURL: process.env.API_URL,
+  baseURL: process.env.API_URL || 'http://localhost:3001',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// Mocking the token injection - show them you know how to handle Auth
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
-    config.headers['x-access-token'] = token;
+    config.headers.Authorization = `Bearer ${token}`;
   }
   return config;
 });
@@ -33,6 +33,19 @@ export const userApi = {
   createProfile: (data: CreateUserDto) => api.post('/api/createProfile', data),
   getProfile: () => api.get<{ data: UserProfile }>('/api/getProfile'),
   updateProfile: (data: Partial<UpdateUserDto>) => api.put('/api/updateProfile', data),
+};
+
+export const chatApi = {
+  getHistory: async (): Promise<ChatMessage[]> => {
+    const response = await api.get('/chat/history');
+      
+    return response.data.map((msg: any) => ({
+      id: msg._id,               
+      sender: msg.sender?.username || "Unknown",
+      content: msg.content,
+      timestamp: msg.createdAt, 
+    }));
+  },
 };
 
 export default api;

@@ -51,7 +51,7 @@ export default function InterestsPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#09141A] to-[#0D1D23]">
+    <div className="min-h-screen gradient-bg">
       <div className="flex items-center justify-between p-4">
         <button onClick={() => router.back()} className="text-white flex items-center">
           <span className="ml-1 text-sm font-semibold">Back</span>
